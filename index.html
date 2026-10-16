@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f1115">
+<title>樊登读书 · 有声书库</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ============ 左侧：书目列表 ============ -->
+  <aside id="sidebar" class="sidebar">
+    <div class="side-head">
+      <div class="brand">
+        <div class="brand-logo">樊</div>
+        <div class="brand-txt">
+          <h1>樊登读书</h1>
+          <p>有声书库 · <span id="statTotal">0</span> 本</p>
+        </div>
+      </div>
+      <button id="btnCloseSide" class="icon-btn only-mobile" title="收起">✕</button>
+    </div>
+
+    <div class="search-wrap">
+      <span class="search-ico">🔍</span>
+      <input id="search" type="search" placeholder="搜索书名或编号…" autocomplete="off" spellcheck="false">
+      <button id="btnClearSearch" class="clear-btn" title="清空" hidden>✕</button>
+    </div>
+
+    <div class="side-tabs">
+      <button class="tab active" data-tab="all">全部</button>
+      <button class="tab" data-tab="fav">收藏 <span id="favCount" class="pill">0</span></button>
+      <button class="tab" data-tab="recent">最近</button>
+    </div>
+
+    <div class="list-head">
+      <span id="listHint">按编号排序</span>
+      <span class="list-counts"><b id="shownCount">0</b> 本</span>
+    </div>
+
+    <ul id="playlist" class="playlist" role="listbox" aria-label="书目列表"></ul>
+
+    <div class="side-foot">
+      <button id="btnShuffleAll" class="ghost-btn">🔀 随机播放全部</button>
+    </div>
+  </aside>
+
+  <!-- ============ 右侧：主播放区 ============ -->
+  <main class="main">
+    <header class="topbar">
+      <button id="btnOpenSide" class="icon-btn only-mobile" title="书目">☰</button>
+      <div class="now-title">
+        <span id="nowTitle">未选择曲目</span>
+      </div>
+      <div class="top-actions">
+        <a id="btnShare" class="icon-btn" title="分享">🔗</a>
+      </div>
+    </header>
+
+    <section class="stage">
+      <!-- 封面/可视化 -->
+      <div class="cover" id="cover">
+        <div class="cover-inner">
+          <div class="cover-letter" id="coverLetter">樊</div>
+        </div>
+        <div class="cover-ring"></div>
+      </div>
+
+      <h2 class="track-title" id="trackTitle">请从左侧选择一本书</h2>
+      <p class="track-sub" id="trackSub">支持顺序播放 · 随机播放 · 单曲循环</p>
+
+      <!-- 进度条 -->
+      <div class="progress-row">
+        <span class="time" id="curTime">00:00</span>
+        <div class="progress" id="progress" role="slider" aria-label="播放进度" tabindex="0">
+          <div class="progress-bg"></div>
+          <div class="progress-fill" id="progressFill"></div>
+          <div class="progress-dot" id="progressDot"></div>
+        </div>
+        <span class="time" id="durTime">00:00</span>
+      </div>
+
+      <!-- 控制条 -->
+      <div class="controls">
+        <button id="btnMode" class="ctl small" title="播放模式">🔁</button>
+        <button id="btnPrev" class="ctl" title="上一首 (←)">⏮</button>
+        <button id="btnPlay" class="ctl primary" title="播放/暂停 (空格)">▶</button>
+        <button id="btnNext" class="ctl" title="下一首 (→)">⏭</button>
+        <button id="btnFav" class="ctl small" title="收藏">♡</button>
+      </div>
+
+      <!-- 次级控制 -->
+      <div class="sub-controls">
+        <div class="vol-wrap">
+          <button id="btnMute" class="ctl tiny" title="静音">🔊</button>
+          <input id="volume" type="range" min="0" max="1" step="0.01" value="1" aria-label="音量">
+        </div>
+        <div class="rate-wrap">
+          <button class="ctl tiny" id="btnRateDown" title="减速">−</button>
+          <span id="rateLabel" class="rate-label">1.0×</span>
+          <button class="ctl tiny" id="btnRateUp" title="加速">＋</button>
+        </div>
+        <button id="btnSleep" class="ctl tiny" title="定时关闭">⏱</button>
+      </div>
+
+      <!-- 倍速快捷 -->
+      <div class="rate-chips" id="rateChips">
+        <button data-rate="0.75">0.75×</button>
+        <button data-rate="1" class="on">1.0×</button>
+        <button data-rate="1.25">1.25×</button>
+        <button data-rate="1.5">1.5×</button>
+        <button data-rate="1.75">1.75×</button>
+        <button data-rate="2">2.0×</button>
+      </div>
+    </section>
+
+    <footer class="statusbar">
+      <span id="statusText">就绪</span>
+      <span id="miniInfo"></span>
+    </footer>
+  </main>
+
+  <audio id="audio" preload="metadata"></audio>
+</div>
+
+<div id="toast" class="toast" hidden></div>
+
+<!-- 睡眠定时面板 -->
+<div id="sleepPanel" class="popover" hidden>
+  <div class="pop-head">定时关闭</div>
+  <button data-min="15">15 分钟</button>
+  <button data-min="30">30 分钟</button>
+  <button data-min="60">60 分钟</button>
+  <button data-min="0">关闭定时</button>
+</div>
+
+<script src="playlist.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
